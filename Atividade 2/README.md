@@ -8,7 +8,7 @@ a língua inglesa.
 ## Sobre
 Nessa atividade, o objetivo era rodar uma aplicação WordPress num container Docker em instâncias EC2 que estariam sendo escaladas pelo serviço de Auto Scaling da AWS. As instâncias deveriam poder rodar em AZs diferentes e, ao mesmo tempo, estarem também conectadas a um banco de dados MYSQL criado pelo serviço de RDS(Relational Database Service) da AWS. O tráfego gerado pelo acesso à aplicação seria balanceado por um Load Balancer. Na imagem abaixo está ilustrado a descrição feita anteriormente:
 
-![image](https://github.com/Robert-Marley/AtividadesPB---CompassUOL/assets/85034379/2a03b668-7c56-4cda-baa5-aea6417e81de)
+![image](https://github.com/Robert-Marley/AtividadesDoPB-----CompassUOL/assets/85034379/d9faefb2-32b1-4313-b2bc-9d3927eb1f0c)
 
 
 ## Configurações da AWS
@@ -21,30 +21,16 @@ Serão necessários 4 security groups para esse projeto: um para as instâncias,
 
 O primeiro deve liberar a porta ``22(SSH)`` para a source "Meu IP" e a porta ``80`` para o security group do load balancer(ou seja, apenas será possível acessar a porta 80 por meio do load balancer):
 
-![image](https://github.com/Robert-Marley/AtividadesPB---CompassUOL/assets/85034379/9cd651d3-919f-468a-83f0-d279acd56882)
-
 O segundo liberará a porta ``80`` para todas as sources:
 
-![image](https://github.com/Robert-Marley/AtividadesPB---CompassUOL/assets/85034379/0c1be60d-53cd-4067-8d58-8836d1685a74)
-
 O terceiro liberará a porta ``80`` e a porta ``2049(NFS/EFS)`` para todas as sources:
-
-![image](https://github.com/Robert-Marley/AtividadesPB---CompassUOL/assets/85034379/f043f873-6a3d-4caa-841d-7127bf7f05e9)
 
 
 E o último liberará a porta ``3306(MYSQL)`` para o security group das instâncias, permitindo que todas elas acessem o DB:
 
-![image](https://github.com/Robert-Marley/AtividadesPB---CompassUOL/assets/85034379/35b5bc7d-b9b6-4183-831c-e428f9daa4ee)
-
-
 ### VPC
 
-A VPC desse projeto vai contar com duas subnets privadas(cada uma em uma AZ) e um route table para cada subnet, ambos apontando para um NAT Gateway; E duas subnets públicas(cada uma em uma AZ também) com um route table apontando para um internet gateway. O resultado será semelhante ao da imagem:
-
-![image](https://github.com/Robert-Marley/AtividadesPB---CompassUOL/assets/85034379/32679091-f12c-4e4b-a6ed-422fde8135d7)
-
-
-![image](https://github.com/Robert-Marley/AtividadesPB---CompassUOL/assets/85034379/6ad21911-b26a-4338-8bcf-2c61573307c6)
+A VPC desse projeto vai contar com duas subnets privadas(cada uma em uma AZ) e um route table para cada subnet, ambos apontando para um NAT Gateway; E duas subnets públicas(cada uma em uma AZ também) com um route table apontando para um internet gateway. 
 
 
 ### Instância EC2
@@ -58,9 +44,6 @@ Por mais que o auto scaling vá cuidar da criação de instâncias futuramente, 
 + Criar um key pair(chave pública e chave privada) ou utilizar um já existente
 
 Tendo criado a instância, selecione-a, clique em Actions > Image e templates > Create template from instance e siga os passos:
-
-![image](https://github.com/Robert-Marley/AtividadesPB---CompassUOL/assets/85034379/2f630428-0c59-460b-bade-9d635fa41a87)
-
 
 + Dê um nome e uma descrição para seu template
 + Se certifique de que as configurações de instância do template estão idênticas às citadas anteriormente
@@ -82,14 +65,8 @@ do tipo ``.pem``, que foi criada junto com a instância, o puTTY só aceita o us
 
 Quando o puTTY for instalado com sucesso, abra o menu Iniciar, procure a pasta do puTTY na lista de apps, abra a pasta e clique no puTTYgen.
 
-![image](https://github.com/Robert-Marley/AtividadesPB---CompassUOL/assets/85034379/b5112b1b-1af9-43f6-a084-adb6ff82b4e0)
-
 Com o puTTYgen aberto, se certifique que o tipo de chave que será gerado é RSA; feito isso, clique em Load, selecione a opção no canto inferior direito que exibe todos os arquivos, procure
 e selecione o arquivo .pem da chave privada gerada no processo de criação da instância EC2.
-
-![image](https://github.com/Robert-Marley/AtividadesPB---CompassUOL/assets/85034379/75c9a7ee-f91c-4ff0-947b-821c8f9474ed)
-
-![image](https://github.com/Robert-Marley/AtividadesPB---CompassUOL/assets/85034379/0a51ce2c-4fe1-4da2-ad53-390ea01da269)
 
 Agora, basta clicar em Save private key, dar um nome a chave nova(de preferência o mesmo nome, para evitar confusões) e salvá-la no destino que preferir.
 
@@ -97,9 +74,6 @@ Com a chave .ppk em mãos, abra o puTTY e siga os seguintes passos:
 
 + No painel Category, expanda Connection, SSH, Auth e clique em Credentials
 + Em Credentials, clique no botão Browse ao lado de Private key for authentication e selecione a chave .ppk criada anteriormente
-
-![image](https://github.com/Robert-Marley/AtividadesPB---CompassUOL/assets/85034379/e652cb4e-56a9-4862-a9f5-849b33b72ee8)
-
 + No painel Category, clique em Session
 + Em Hostname(or IP address), insira os dados no formato abaixo:
 
@@ -117,9 +91,6 @@ siga os seguintes passos(se certifique de que se o estado da sua instância é "
 
 + Selecione Instance em target type
 + Dê um nome ao target group, insira 80 em Port e selecione a VPC criada anteriormente
-
-![image](https://github.com/Robert-Marley/AtividadesPB---CompassUOL/assets/85034379/8b783a8b-1541-4a6e-a608-3f14606f3b29)
-
 + Clique em "Next"
 + Selecione a instância criada anteriormente para ser inserida no Load Balancer, se certifique de que o valor em "Port for the selected instances" é 80 e clique em "Include as pending below"
 + Clique em Create target group
@@ -127,9 +98,6 @@ siga os seguintes passos(se certifique de que se o estado da sua instância é "
 Agora, selecione a ferramenta Load Balancer no serviço de EC2, clique em Create load balancer e siga os seguintes passos:
 
 + Crie um Application Load Balancer
-
-![image](https://github.com/Robert-Marley/AtividadesPB---CompassUOL/assets/85034379/d594fb45-eaac-4761-b2c1-ffb8c6d83cb2)
-
 + Dê um nome a ele, selecione a VPC criada anteriormente e todas as suas AZs disponíveis, mas certifique-se de escolher as subnets públicas(são as que possuem um internet gateway)
 + Selecione o security group criado anteriormente para o LB
 + Em Listeners and routing, selecione o protocolo HTTP e o target group que acabamos de criar
@@ -146,21 +114,9 @@ o ideal é que você leia do que cada um se trata antes de seguir, mas já adian
 + Selecione ``MYSQL`` em Engine type
 + Selecione a versão mais antiga disponível do MYSQL(isso geralmente garante que ele vai funcionar bem com o Wordpress)
 + Dê um nome à instância do seu DB(atenção: isso não é o nome do seu DB, mas sim da instância do DB na AWS) e crie um username e uma senha para o master user do DB
-
-![image](https://github.com/Robert-Marley/AtividadesPB---CompassUOL/assets/85034379/e162ec7f-f859-4b0c-908a-a0d353d9b4e8)
-
 + Selecione a VPC criada anteriormente, juntamente com o security group do DB e selecione uma AZ para o DB ser criado(se for sua primeira vez criando um DB, o DB subnet group provavelmente estará vazio, mas ele será criado automaticamente)
-
-![image](https://github.com/Robert-Marley/AtividadesPB---CompassUOL/assets/85034379/597a7572-06fb-4ffe-b11a-9bdb6ed28299)
-
 + Nas configurações adicionais de conectividade, se certifique que a porta do banco de dados é 3306
-
-![image](https://github.com/Robert-Marley/AtividadesPB---CompassUOL/assets/85034379/99e854b0-37cf-4abe-987b-ce4e7868f41d)
-
 + Em Configurações adicionais, dê um nome ao seu DB
-
-![image](https://github.com/Robert-Marley/AtividadesPB---CompassUOL/assets/85034379/d9405580-fde2-4503-aceb-122a5d0a741e)
-
 + Clique em Create database
 
 ### Script e EFS
@@ -222,18 +178,9 @@ Agora nós só precisamos criar nosso auto scaling para que tudo esteja pronto. 
 
 + Dê um nome ao ASG e selecione a template que criamos anteriormente
 + Selecione a VPC criada anteriormente e todas as suas subnets
-
-![image](https://github.com/Robert-Marley/AtividadesPB---CompassUOL/assets/85034379/e363e53f-1d20-4e66-88a3-096c152b6a11)
-
 + Em Load balancing, selecione "Attach to an existing load balancer"; depois, selecione a opção "Choose from your load balancer target groups" e escolha o target group criado anteriormente para o nosso LB
-
-![image](https://github.com/Robert-Marley/AtividadesPB---CompassUOL/assets/85034379/c80a2f02-174c-40a6-8bf4-5b3a1196163b)
-
 + Em Health Checks, ative os health checks do ELB("Turn on Elastic Load Balancing health checks")
-+ Configure o group size como desejar(a imagem é apenas um exemplo)
-
-![image](https://github.com/Robert-Marley/AtividadesPB---CompassUOL/assets/85034379/ff15a489-4d9d-4a72-87be-5303e2839b7d)
-
++ Configure o group size como desejar
 + Clique em Create Auto Scaling group
 
 Com isso, seu auto scaling deveria ter sido criado e sua aplicação deveria funcionar perfeitamente!
