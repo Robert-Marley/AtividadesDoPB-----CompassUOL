@@ -25,9 +25,11 @@ no menu da ferramenta Security Groups(que faz parte do serviço de EC2), será n
 + Clicar no botão "Create Security Group"
 + Dar um nome e uma descrição para o Security Group
 + Adicionar as regras de entrada como estão na imagem abaixo(é possível alterar as configurações de tráfego para regular quem poderá acessar a intância)
-+ Clicar no botão "Create security group" para finalizar a configuração e criar o security group.
 
-![imagem_2023-07-09_192748097](https://github.com/Robert-Marley/atividadeslinuxrepo/assets/85034379/baee8afe-536c-4d9e-8018-b7326aa5dd38)
+![image](https://github.com/Robert-Marley/AtividadesDoPB-----CompassUOL/assets/85034379/ad3b2052-105e-447a-aed1-f15b3d6de5e6)
+
+
++ Clicar no botão "Create security group" para finalizar a configuração e criar o security group.
 
 ### VPC
 
@@ -38,16 +40,11 @@ para criar nossa VPC devemos, no menu do serviço de VPC, fazer o seguinte:
 + Dar um nome à VPC e especificar o endereço IPv4 desejado(Em caso de dúvida, coloque algo como 192.168.0.0/16)
 + Clicar no botão "Create VPC"
 
-![imagem_2023-07-09_200920206](https://github.com/Robert-Marley/atividadeslinuxrepo/assets/85034379/9ac4c904-27a1-4420-9604-aa79a0eaebcb)
-
-  
 Em seguida, é preciso criar uma subnet:
 + No menu "Subnets", clique no botão "Create subnet"
 + Selecione a VPC criada anteriormente
 + Dê um nome à subnet, selecione uma AZ(na dúvida, selecione us-east-1a) e coloque um endereço IPv4 adequado(na dúvida, coloque 192.168.1.0/24)
 + Clique no botão "Create subnet"
-
-![imagem_2023-07-09_201546009](https://github.com/Robert-Marley/atividadeslinuxrepo/assets/85034379/19675534-1645-488b-9aee-eb4f728379f4)
 
 Agora, criaremos uma route table que direcione o tráfego da nossa subnet para o internet gateway que criaremos mais a frente:
 + No menu "Route Tables", clique no botão "Create route table"
@@ -55,8 +52,6 @@ Agora, criaremos uma route table que direcione o tráfego da nossa subnet para o
 + Clique em "create route table"
 + Com a route table já criada, selecione-a e clique na aba "subnet associations"
 + Clique no botão "Edit subnet associations", selecione a subnet criada anteriormente e salve as configurações
-![imagem_2023-07-09_202843430](https://github.com/Robert-Marley/atividadeslinuxrepo/assets/85034379/c0f3de33-b74c-4ec4-a31b-e513605f305e)
-
 
 Finalmente, criaremos o internet gateway, que permitirá que nossa rede se comunique com a internet, e o associaremos com a route table:
 + No menu "Internet Gateways", clique no botão "Create internet gateway"
@@ -66,7 +61,8 @@ Finalmente, criaremos o internet gateway, que permitirá que nossa rede se comun
 + De volta no menu "Route Tables", selecione a route table criada anteriormente e clique na aba "Routes"
 + Clique no botão "Edit routes", faça a configuração como na imagem abaixo e clique em "Save changes"
 
-![imagem_2023-07-09_203620238](https://github.com/Robert-Marley/atividadeslinuxrepo/assets/85034379/e93a377d-fe85-4e34-bb9b-01d3f887e3bf)
+![image](https://github.com/Robert-Marley/AtividadesDoPB-----CompassUOL/assets/85034379/548e9956-7465-4264-a2d5-4351c3205d66)
+
 
 ### Instâncias EC2
 
@@ -75,8 +71,6 @@ A instância servidor deve possuir as seguintes configurações:
 + 16 GB SSD
 + Família t2.micro ou t3.micro
 + Selecionar a VPC e o security group criados anteriormente
-
-![Configs1](https://github.com/Robert-Marley/atividadeslinuxrepo/assets/85034379/4f9c372e-81ed-4c5a-b71e-2afc574a04e2)
 
 A configuração de key pair da instância servidor é mais específica do que a cliente. Teremos que utilizar um key pair que permita o acesso 
 ao ambiente da instância por meio de uma chave pública. Para isso, abra o shell CLI do seu sistema operacional(no Windows é o prompt de comando),
@@ -89,13 +83,8 @@ Com isso, serão geradas uma chave OpenSSH pública e uma privada. Com elas em m
 + Clique em "Actions" e selecione a opção "Import key pair"
 + Dê um nome ao key pair, faça upload do arquivo da chave pública(ou simplesmente copie o seu conteúdo na caixa de input) e confirme.
 
-![imagem_2023-07-12_111627038](https://github.com/Robert-Marley/atividadeslinuxrepo/assets/85034379/de1128f8-ae43-4a90-923a-688dc9a3f1e5)
-
 Feito isso, você terá criado um novo key pair para utilizar na criação de instâncias e, pelo fato da key pública poder estar presente tanto na máquina 
 que acessa quanto na máquina que é acessada(instância servidor), será possível fazer o acesso de forma automática, como no exemplo abaixo:
-
-![imagem_2023-07-12_112225270](https://github.com/Robert-Marley/atividadeslinuxrepo/assets/85034379/8e4b85b4-fb85-477e-93e8-c80ba8746719)
-
 
 Também é necessário gerar um elastic IP e anexá-lo à instância, de forma que seu IP não se altere caso a máquina seja desligada ou reiniciada.
 Para gerar um elastic IP, é preciso:
@@ -103,13 +92,10 @@ Para gerar um elastic IP, é preciso:
 + Clicar no botão "Allocate Elastic IP address"
 + Clicar no botão "Allocate"
 + (Opcional) É possível adicionar tags e fazer configurações relacionadas às AZs
-![imagem_2023-07-09_185604550](https://github.com/Robert-Marley/atividadeslinuxrepo/assets/85034379/297df41f-0be1-4b97-a789-b8d30df91cd3)
 
 Feito tudo isso, o Elastic IP estará criado, bastando agora apenas anexá-lo à instância servidor. Para isso, é preciso selecionar o Elastic IP criado, clicar em "Actions" e
 selecionar a opção "Associate Elastic IP address". Feito isso, uma nova página será aberta, e nela deve-se selecionar a opção "Instance", procurar a instância servidor
 e seu respectivo endereço de IP privado. Feitas todas essas configurações, será possível, enfim, clicar no botão "Associate" e associar o Elastic IP à instância.
-
-![imagem_2023-07-09_190606782](https://github.com/Robert-Marley/atividadeslinuxrepo/assets/85034379/f7c216a2-4c10-4229-a5aa-bc174e605efd)
 
 Agora, para criar a instância cliente, basta apenas:
 + Sistema operacional Amazon Linux 2
@@ -148,18 +134,13 @@ sudo systemctl status httpd
 Agora, é preciso configurar o web server por meio do arquivo httpd.conf, localizado em `/etc/httpd/conf/httpd.conf`. Ao abri-lo no editor de texto com o comando `sudo nano /etc/httpd/conf/httpd.conf` (use
 o editor de texto de sua preferência, o comando anterior é apenas um exemplo), ele provavelmente se parecerá com isso:
 
-![imagem_2023-07-11_092621351](https://github.com/Robert-Marley/atividadeslinuxrepo/assets/85034379/abc3f79d-6260-45d2-9d22-e1905dd339b9)
-
-Aqui, temos que garantir que algumas coisas estejam configuradas exatamente como desejamos. Na imagem acima, por exemplo, é possível perceber que o servidor Apache estará "ouvindo" na porta 80, que é a porta
-padrão do protocolo HTTP. Essa configuração é essencial para que o Apache funcione, afinal, ele se utiliza do protocolo citado anteriormente. 
+Aqui, temos que garantir que algumas coisas estejam configuradas exatamente como desejamos. Umas das coisas é a porta que o servidor Apache irá utilizar. Nesse caso, ele deve estar "ouvindo" na porta 80, que é a porta padrão do protocolo HTTP. Essa configuração é essencial para que o Apache funcione, afinal, ele se utiliza do protocolo citado anteriormente. 
 
 As outras configurações importantes para o projeto, como o `DocumentRoot`, geralmente já estão corretas por padrão, então isso não deveria ser uma preocupação. Porém, caso algum problema ocorra,verifique se 
 os valores no seu documento correspondem ao documento `httpd.conf` presente neste repositório.
 
 Feitas todas as configurações, copie o endereço IPv4 público da sua instância servidor, cole na barra de busca do seu navegador e pressione Enter. Caso você não tenha adicionado nenhum arquivo HTML no diretório
 `/var/www/html`, a seguinte página deveria estar sendo exibida:
-
-![imagem_2023-07-11_100623161](https://github.com/Robert-Marley/atividadeslinuxrepo/assets/85034379/62e1abbe-25a1-4ef6-bba1-5b5f541dfdff)
 
 ### Script
 
@@ -202,8 +183,6 @@ para fazer com que o script seja executado a cada 5 minutos. Faça essa edição
 
 Dentro do arquivo `crontab`, faça a seguinte configuração:
 
-![imagem_2023-07-11_113247831](https://github.com/Robert-Marley/atividadeslinuxrepo/assets/85034379/2804e6cc-d003-4db1-bb15-886dae32b3da)
-
 A última linha do arquivo faz com que o usuário root execute o arquivo.sh a cada 5 minutos.
 
 ### Servidor NFS
@@ -224,8 +203,6 @@ Agora no linux, você deve criar um diretório chamado "efs" no diretório /. El
 final do comando e pressione Enter. Isso deveria bastar para fazer com que o file system já esteja funcionando dentro do diretório.
 
 Basta agora criar um diretório com seu nome dentro do file system e, dentro do diretório com seu nome, um outro diretório chamado "logs" e um arquivo chamado "status.txt", desse jeito aqui:
-
-![imagem_2023-07-11_123245007](https://github.com/Robert-Marley/atividadeslinuxrepo/assets/85034379/cd2f9150-fdb8-497a-8389-0420cfb6c2d2)
 
 Esses diretórios e arquivos são utilizados no nosso script para armazenar os logs ou fazer a checagem do status do Apache, daí a importância de criá-los.
 
