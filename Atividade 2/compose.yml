@@ -1,0 +1,16 @@
+version: '2.2'
+services:
+  wordpress:
+    image: wordpress:latest
+    volumes:
+      - ./config/php.conf.upload.ini:/usr/local/etc/php/conf.d/uploads.ini
+      - ./wp-app:/var/www/html
+    environment:
+      TZ: America/Sao_Paulo
+      # NÃO SE ESQUEÇA DE ALTERAR ESSES VALORES COM BASE NO SEU DB
+      WORDPRESS_DB_HOST: endpoint-DB-RDS 
+      WORDPRESS_DB_NAME: db-name
+      WORDPRESS_DB_USER: db-user
+      WORDPRESS_DB_PASSWORD: db-password
+    ports:
+      - 80:80
