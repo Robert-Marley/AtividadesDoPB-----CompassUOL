@@ -35,7 +35,7 @@ services:
       WORDPRESS_DB_USER: db-user
       WORDPRESS_DB_PASSWORD: db-password
     ports:
-      - 80:80"  >> /efs/docker-compose.yml
+      - 80:80"  > /efs/docker-compose.yml
 
 docker-compose up -d
 
