@@ -19,14 +19,13 @@ Antes de mais nada, é preciso ter uma conta na AWS e, nela, ter acesso aos serv
 
 Serão necessários 4 security groups para esse projeto: um para as instâncias, um segundo para o load balancer, um terceiro para o EFS e mais um para o RDS.
 
-O primeiro deve liberar a porta ``22(SSH)`` para a source "Meu IP" e a porta ``80`` para o security group do load balancer(ou seja, apenas será possível acessar a porta 80 por meio do load balancer):
+O primeiro deve liberar a porta ``22(SSH)`` para a source "Meu IP" e a porta ``80`` para o security group do load balancer(ou seja, apenas será possível acessar a porta 80 por meio do load balancer);
 
-O segundo liberará a porta ``80`` para todas as sources:
+O segundo liberará a porta ``80`` para todas as sources;
 
-O terceiro liberará a porta ``80`` e a porta ``2049(NFS/EFS)`` para todas as sources:
+O terceiro liberará a porta ``80`` e a porta ``2049(NFS/EFS)`` para todas as sources;
 
-
-E o último liberará a porta ``3306(MYSQL)`` para o security group das instâncias, permitindo que todas elas acessem o DB:
+E o último liberará a porta ``3306(MYSQL)`` para o security group das instâncias, permitindo que todas elas acessem o DB.
 
 ### VPC
 
