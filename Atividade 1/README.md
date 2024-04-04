@@ -84,7 +84,7 @@ Com isso, serão geradas uma chave OpenSSH pública e uma privada. Com elas em m
 + Dê um nome ao key pair, faça upload do arquivo da chave pública(ou simplesmente copie o seu conteúdo na caixa de input) e confirme.
 
 Feito isso, você terá criado um novo key pair para utilizar na criação de instâncias e, pelo fato da key pública poder estar presente tanto na máquina 
-que acessa quanto na máquina que é acessada(instância servidor), será possível fazer o acesso de forma automática, como no exemplo abaixo:
+que acessa quanto na máquina que é acessada(instância servidor), será possível fazer o acesso de forma automática.
 
 Também é necessário gerar um elastic IP e anexá-lo à instância, de forma que seu IP não se altere caso a máquina seja desligada ou reiniciada.
 Para gerar um elastic IP, é preciso:
@@ -132,7 +132,7 @@ sudo systemctl status httpd
 ```
 
 Agora, é preciso configurar o web server por meio do arquivo httpd.conf, localizado em `/etc/httpd/conf/httpd.conf`. Ao abri-lo no editor de texto com o comando `sudo nano /etc/httpd/conf/httpd.conf` (use
-o editor de texto de sua preferência, o comando anterior é apenas um exemplo), ele provavelmente se parecerá com isso:
+o editor de texto de sua preferência, o comando anterior é apenas um exemplo).
 
 Aqui, temos que garantir que algumas coisas estejam configuradas exatamente como desejamos. Umas das coisas é a porta que o servidor Apache irá utilizar. Nesse caso, ele deve estar "ouvindo" na porta 80, que é a porta padrão do protocolo HTTP. Essa configuração é essencial para que o Apache funcione, afinal, ele se utiliza do protocolo citado anteriormente. 
 
@@ -140,7 +140,7 @@ As outras configurações importantes para o projeto, como o `DocumentRoot`, ger
 os valores no seu documento correspondem ao documento `httpd.conf` presente neste repositório.
 
 Feitas todas as configurações, copie o endereço IPv4 público da sua instância servidor, cole na barra de busca do seu navegador e pressione Enter. Caso você não tenha adicionado nenhum arquivo HTML no diretório
-`/var/www/html`, a seguinte página deveria estar sendo exibida:
+`/var/www/html`, uma página padrão do Apache deveria estar sendo exibida.
 
 ### Script
 
@@ -181,10 +181,6 @@ fi
 Agora, com o script pronto para ser executado, vamos configurar o arquivo `/etc/crontab`(arquivo que será lido pelo programa chamado cron, responsável por agendar execuções de tarefas em segundo plano automaticamente)
 para fazer com que o script seja executado a cada 5 minutos. Faça essa edição do arquivo com o editor de texto que preferir(nano, vim, vi, etc).
 
-Dentro do arquivo `crontab`, faça a seguinte configuração:
-
-A última linha do arquivo faz com que o usuário root execute o arquivo.sh a cada 5 minutos.
-
 ### Servidor NFS
 
 A implementação do NFS será feita por meio do serviço Elastic File System(EFS) da AWS. Por mais que algumas coisas sejam feitas via AWS aqui, preferi colocar essa etapa na parte de linux por ser necessário usar comandos no terminal.
@@ -202,9 +198,7 @@ sudo mount -t nfs4 -o nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,ret
 Agora no linux, você deve criar um diretório chamado "efs" no diretório /. Ele será o ponto de montagem do sistema de arquivos. Tendo criado o diretório, cole o comando copiado anteriormente, adicione uma / logo antes da palavra "efs" que aparece no
 final do comando e pressione Enter. Isso deveria bastar para fazer com que o file system já esteja funcionando dentro do diretório.
 
-Basta agora criar um diretório com seu nome dentro do file system e, dentro do diretório com seu nome, um outro diretório chamado "logs" e um arquivo chamado "status.txt", desse jeito aqui:
-
-Esses diretórios e arquivos são utilizados no nosso script para armazenar os logs ou fazer a checagem do status do Apache, daí a importância de criá-los.
+Basta agora criar um diretório com seu nome dentro do file system e, dentro do diretório com seu nome, um outro diretório chamado "logs" e um arquivo chamado "status.txt". Esses diretórios e arquivos são utilizados no nosso script para armazenar os logs ou fazer a checagem do status do Apache, daí a importância de criá-los.
 
 Por fim, você pode utilizar a máquina cliente para testar o compartilhamento dos arquivos. Para isso, crie também um diretório "efs" no mesmo local e use o mesmo comando que você utilizou anteriormente para montar o file system. Tendo feito
 isso, deveria ser possível visualizar os arquivos criados pela instância servidor.
